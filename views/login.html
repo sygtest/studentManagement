@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+  <title>计算机学院-学生信息管理系统</title>
+
+  <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <link href="/public/lib/css/cover.css" rel="stylesheet">
+  <script src="/public/lib/js/ie-emulation-modes-warning.js"></script>
+
+  <script src="/public/lib/js/vue.js"></script>
+  <script src="/public/lib/js/vue-resource.min.js"></script>
+  <script src="/public/lib/js/vue-router.js"></script>
+
+  <link rel="stylesheet" href="/public/css/login.css">
+
+</head>
+
+<body>
+  <div class="site-wrapper" id="app">
+    <div class="site-wrapper-inner">
+      <div class="cover-container">
+
+        <div class="masthead clearfix">
+          <div class="inner">
+            <h3 class="masthead-brand">计算机学院</h3>
+            <nav>
+              <ul class="nav masthead-nav">
+                <router-link to="/home" tag="li"><a href="javascript:void">Home</a></router-link>
+                <router-link to="/login" tag="li"><a href="javascript:void">Login</a></router-link>
+                <router-link to="/contact" tag="li"><a href="javascript:void">Contact</a></router-link>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <transition mode="out-in">
+          <router-view></router-view>
+        </transition>
+
+        <div class="mastfoot">
+          <div class="inner">
+            <p>学生信息管理系统—— <a href="http://www.wut.edu.cn/">计算机</a>, by <a
+                href="#">@cyg</a>.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <template id="home">
+    <div class="inner cover">
+      <h1 class="cover-heading">学生信息管理系统</h1>
+      <p class="lead">
+        这是计算机学院的学生信息管理系统，只有管理员账号才可进入系统。
+      </p>
+      <p class="lead">
+        请先 <router-link to="/login" class="btn btn-lg btn-default">登录</router-link>
+      </p>
+    </div>
+  </template>
+
+  <template id="login">
+    <div class="inner cover login">
+      <form class="form-signin" action="/login" method="POST">
+        <h2 class="form-signin-heading">Login</h2>
+
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" class="form-control" v-model:value="username" placeholder="Username" required autofocus="true">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" class="form-control" v-model:value="password" placeholder="Password" required>
+
+        <button class="btn btn-lg btn-info btn-block" @click.prevent="login">Sign in</button>
+      </form>
+    </div>
+  </template>
+
+  <template id="contact">
+    <div>
+      <h3>如有问题请联系:</h3>
+      <h4>管理员</h4>
+    </div>
+  </template>
+
+  <script src="/public/js/login.js"></script>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="/public/lib/js/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="/public/lib/js/bootstrap.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="/public/lib/js/ie10-viewport-bug-workaround.js"></script>
+
+</body>
+
+</html>
