@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
 
-    <title>学生信息管理系统</title>
+  <title>学生信息管理系统</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="/public/lib/css/dashboard.css" rel="stylesheet">
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="/../..assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="/public/lib/js/ie-emulation-modes-warning.js"></script>
-    <script src="/public/lib/js/jquery.min.js"></script>
+  <!-- Bootstrap core CSS -->
+  <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="/public/lib/css/dashboard.css" rel="stylesheet">
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="/../..assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="/public/lib/js/ie-emulation-modes-warning.js"></script>
+  <script src="/public/lib/js/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="/public/css/index.css">
+  <script src="/public/lib/js/vue.js"></script>
+  <script src="/public/lib/js/vue-resource.min.js"></script>
+  <script src="/public/lib/js/vue-router.js"></script>
 
-    <!-- <script src="/public/lib/js/vue.js"></script> -->
-  </head>
+  <link rel="stylesheet" href="/public/css/index.css">
+</head>
 
-  <body>
-
+<body>
+  <!-- 这是要挂载的vue实例 -->
+  <div id="bpp">
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -59,33 +63,119 @@
             <li><a href="/students">总览 <span class="sr-only">(current)</span></a></li>
             <li><a href="/students">可视化数据</a></li>
             <li><a href="/students">学生信息</a></li>
+            <li><a href="/contacts">学生联系信息</a></li>
+            <li><a href="/grades">学生成绩</a></li>
+            <li><a href="/teachers">教师信息</a></li>
             <li class="active active1"><a href="javascript:void(0)">日志</a></li>
+            <li><a href="/reset">修改密码</a></li>
           </ul>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h2 class="sub-header">日志</h2>
-          <form action="/feedback" method="POST">
-            <div class="form-group">
-              <input type="text" name="tt" class="form-control" placeholder="输入标题……">
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" style="resize: none;" name="text" cols="30" rows="10" placeholder="输入内容……" maxlength="500"></textarea>
-            </div>
-            <button type="submit" class="btn btn-default">提交</button>
-            <a href="/students" class="btn btn-default">
-              <svg t="15327360069" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2717" width="15" height="15"><path d="M853.333333 245.333333H245.333333l93.866667-93.866666c12.8-12.8 12.8-34.133333 0-46.933334-12.8-12.8-34.133333-12.8-46.933333 0l-145.066667 145.066667c-12.8 12.8-12.8 34.133333 0 46.933333l145.066667 145.066667c6.4 6.4 14.933333 10.666667 23.466666 10.666667s17.066667-4.266667 23.466667-10.666667c12.8-12.8 12.8-34.133333 0-46.933333L256 311.466667h597.333333c6.4 0 10.666667 4.266667 10.666667 10.666666v426.666667c0 6.4-4.266667 10.666667-10.666667 10.666667H170.666667c-17.066667 0-32 14.933333-32 32s14.933333 32 32 32h682.666666c40.533333 0 74.666667-34.133333 74.666667-74.666667V320c0-40.533333-34.133333-74.666667-74.666667-74.666667z" p-id="2718"></path></svg>
-            </a>
-          </form>
-        </div>
-        
+        <!-- 模板 -->
+        <transition mode='out-in'>
+          <router-view></router-view>
+        </transition>
+
       </div>
     </div>
+  </div>
 
-    <script>
-      $('button').click(function () {
-        alert('提交完成')
-      })
-    </script>
-    
-</body></html>
+
+  <!-- 渲染日志 -->
+  <template id="feedbacks">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      
+      <!-- 添加日志连接 -->
+      <h2 class="sub-header" id="stuTittle">日志列表</h2>
+      <div class="add-btn">
+        <!-- 跳转到组件newFeedback -->
+        <router-link to="/newFeedback" class="btn btn-info">添加日志信息</router-link>
+      </div>
+      <!-- 日志信息 -->
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>标题</th>
+              <th>内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in feedbacks" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.tt }}</td>
+              <td>{{ item.text }}</td>
+              <td>
+                <!-- feedbacks页面中进行编辑和删除 编辑和删除的方法 -->
+                <a class="btn" @click.prevent="editFeed(item._id)" role="button" href="">编辑</a>
+                <a class="btn" @click.prevent="delFeed(item._id)" role="button" href="">删除</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </template>
+
+  <!-- 渲染编辑日志 -->
+  <template id='editFeedbackPage'>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h2 class="sub-header">编辑日志信息</h2>
+
+      <!-- 向服务器发送的路由为/feedbacks/edit -->
+      <form action="/feedbacks/edit" method="POST">
+        <input type="hidden" :value='feedback._id' name="id">
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="tt" name='tt' placeholder="输入日志标题……" :value="feedback.tt">
+        </div>
+        <div class="form-group">
+          <textarea class="form-control" style="resize: none;" name="text" cols="30" rows="10" placeholder="输入内容……"
+            maxlength="500" :value="feedback.text" id="text"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-default">提交</button>
+        <router-link to="/feedbacks" class="btn">取消</router-link>
+      </form>
+    </div>
+  </template>
+
+  <!-- 渲染添加日志 -->
+  <template id="newFeedback">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h2 class="sub-header">添加日志</h2>
+
+        <!-- 请求的路由为/feedbacks/newFeedback -->
+        <form action="/feedbacks/newFeedback" method="POST">
+          <div class="form-group">
+            <input type="text" name="tt" class="form-control" id="tt" placeholder="输入标题……" required>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" style="resize: none;" id="text" name="text" cols="30" rows="10" placeholder="输入内容……"
+              maxlength="500" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-default">提交</button>
+          <router-link to='/feedbacks' class="btn" >
+            <svg t="11111111" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              p-id="2717" width="15" height="15">
+              <path
+                d="M853.333333 245.333333H245.333333l93.866667-93.866666c12.8-12.8 12.8-34.133333 0-46.933334-12.8-12.8-34.133333-12.8-46.933333 0l-145.066667 145.066667c-12.8 12.8-12.8 34.133333 0 46.933333l145.066667 145.066667c6.4 6.4 14.933333 10.666667 23.466666 10.666667s17.066667-4.266667 23.466667-10.666667c12.8-12.8 12.8-34.133333 0-46.933333L256 311.466667h597.333333c6.4 0 10.666667 4.266667 10.666667 10.666666v426.666667c0 6.4-4.266667 10.666667-10.666667 10.666667H170.666667c-17.066667 0-32 14.933333-32 32s14.933333 32 32 32h682.666666c40.533333 0 74.666667-34.133333 74.666667-74.666667V320c0-40.533333-34.133333-74.666667-74.666667-74.666667z"
+                p-id="2718"></path>
+            </svg>
+          </router-link>
+        </form>
+      </div>
+  </template>
+
+
+
+  <script>
+    $('button').click(function () {
+      alert('提交完成')
+    })
+  </script>
+<script src="/public/js/feedback.js"></script>
+</body>
+
+</html>

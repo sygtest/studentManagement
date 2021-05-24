@@ -15,13 +15,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+
 //配置express-session
 app.use(session({
-  secret: 'lzj',    //给数据加个字符串，增加安全性
+  secret: 'cyg',    //给数据加个字符串，增加安全性
   resave: false,
   saveUninitialized: true
 }))
 
 app.use(router)    //把路由容器挂载到app服务中
 
-app.listen(5000, () => console.log(`App listening on port 5000!`))
+app.listen(3000, () => console.log(`App listening on port 3000!`))

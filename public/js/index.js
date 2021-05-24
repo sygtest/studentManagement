@@ -1,4 +1,5 @@
-const students = {
+// 这是针对渲染学生页面的对象
+const students = { //渲染学生页面的组件
   template: '#students',
   data() {
     return {
@@ -11,21 +12,25 @@ const students = {
   },
   methods: {
     getStudents() {
+      // 通过get请求/getStu获取学生信息
       this.$http.get('/getStu').then(res => {
         this.students = res.body
       })
     },
     edit(id) {
+      // 通过get请求'/students/edit?id=' + id
       this.$http.get('/students/edit?id=' + id).then(res => {
         this.editStu = res.body
 
         this.$router.push({
+          // 这个是组件名editPage页就是要访问的路由
           name: 'editPage',
           params: { student: this.editStu }
         })
       })
     },
     del(id) {
+      // 通过发送post请求/del来删除学生信息
       this.$http.post('/del', { id: id }).then(res => {
         if (res.body.success) {
           alert('删除成功')
@@ -142,6 +147,7 @@ const students = {
   },
 
   mounted() {
+    // 在挂载时调用以下方法获取数据库中的数据
     this.getStudents()
     this.sexVD()
     this.oldVD()
@@ -149,6 +155,7 @@ const students = {
 
 }
 
+// 编辑学生页面组件
 const editPage = {
   template: '#editPage',
   data() {
@@ -161,6 +168,7 @@ const editPage = {
   },
 }
 
+// 添加学生页面组件
 const create = {
   template: '#create'
 }
@@ -175,7 +183,7 @@ const help = {
 
 const router = new VueRouter({
   routes: [
-    { path: '/', redirect: '/students' },
+    { path: '/', redirect: '/students' }, //这里的/ 是基于父组件路由之下 即就是/students/
     { path: '/students', component: students },
     { path: '/create', component: create },
     { path: '/editPage/', name: 'editPage', component: editPage },
@@ -197,7 +205,7 @@ const vm = new Vue({
       this.$http.get("/getUser").then(res => {
         this.user = res.body
         if (!this.user) {
-          window.location.href = "/"
+          window.location.href = "/" //这里的/ 指向登录页面
         }
       })
     },
@@ -205,7 +213,10 @@ const vm = new Vue({
       this.$http.post('/search', { searchData: this.searchData })
         .then(res => {
           alert('学号: ' + res.body[0].num + '\n姓名: ' + res.body[0].name + '\n年龄: '
-            + res.body[0].age + '\n性别: ' + res.body[0].sex + '\n爱好: ' + res.body[0].hobbies)
+            + res.body[0].age + '\n性别: ' + res.body[0].sex + '\n爱好: ' + res.body[0].hobbies+ '\nqq号: ' + res.body[0].qq
+            + '\n住址: ' + res.body[0].address+ '\n身份证号: ' + res.body[0].idNumber+ '\n邮箱: ' + res.body[0].email
+            + '\n宿舍: ' + res.body[0].dorm+ '\n专业: ' + res.body[0].major+ '\n学历: ' + res.body[0].education
+            + '\n生源地: ' + res.body[0].originAdd + '\n密码：' + res.body[0].password)
         })
     },
 

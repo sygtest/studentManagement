@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+  <title>学生信息管理系统</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="/public/lib/css/dashboard.css" rel="stylesheet">
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="/../..assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="/public/lib/js/ie-emulation-modes-warning.js"></script>
+  <script src="/public/lib/js/jquery.min.js"></script>
+
+  <script src="/public/lib/js/vue.js"></script>
+  <script src="/public/lib/js/vue-resource.min.js"></script>
+  <script src="/public/lib/js/vue-router.js"></script>
+
+  <link rel="stylesheet" href="/public/css/index.css">
+</head>
+
+<body>
+  <!-- 这是要挂载的vue实例 -->
+  <div id="cpp">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">学生信息管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid" id="app">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+
+            <li><a href="/students">基本信息</a></li>
+            <li class="active active1"><a href="javascript:void(0)">联系信息</a></li>
+            <li><a href="/grades">成绩</a></li>
+            <li><a href="/reset">修改密码</a></li>
+          </ul>
+        </div>
+
+        <!-- 模板 -->
+        <transition mode='out-in'>
+          <router-view></router-view>
+        </transition>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 渲染成绩 -->
+  <template id="contacts">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      
+      <!-- 学生联系信息 -->
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>姓名</th>
+              <th>联系方式</th>
+              <th>父亲</th>
+              <th>父亲联系方式</th>
+              <th>母亲</th>
+              <th>母亲联系方式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in contacts" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.phone}}</td>
+              <td>{{ item.father}}</td>
+              <td>{{ item.fatherPhone}}</td>
+              <td>{{ item.mother}}</td>
+              <td>{{ item.motherPhone}}</td>
+              <td>
+                <!-- feedbacks页面中进行编辑和删除 编辑和删除的方法 -->
+                <a class="btn" @click.prevent="editCont(item._id)" role="button" href="">编辑</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </template>
+
+  <!-- 渲染编辑学生联系 -->
+  <template id='editContactPage'>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h2 class="sub-header">编辑学生联系信息</h2>
+
+      <!-- 向服务器发送的路由为/contacts/edit -->
+      <form action="/contacts/edit" method="POST">
+        <input type="hidden" :value='contact._id' name="id">
+
+        <div class="form-group">
+          <label for="name">姓名</label>
+          <input type="text" class="form-control" id="name" name='name' placeholder="输入学生姓名……" :value="contact.name">
+        </div>
+        <div class="form-group">
+          <label for="phone">联系方式</label>
+          <input type="number" class="form-control" id="phone" name='phone' placeholder="" :value="contact.phone">
+        </div>
+        <div class="form-group">
+          <label for="father">父亲</label>
+          <input type="text" class="form-control" id="father" name='father' placeholder="" :value="contact.father">
+        </div>
+        <div class="form-group">
+          <label for="fatherPhone">父亲联系方式</label>
+          <input type="number" class="form-control" id="fatherPhone" name='fatherPhone' placeholder="" :value="contact.fatherPhone">
+        </div>
+        <div class="form-group">
+          <label for="mother">母亲</label>
+          <input type="text" class="form-control" id="mother" name='mother' placeholder="" :value="contact.mother">
+        </div>
+        <div class="form-group">
+          <label for="motherPhone">母亲联系方式</label>
+          <input type="number" class="form-control" id="motherPhone" name='motherPhone' placeholder="" :value="contact.motherPhone">
+        </div>
+
+        <button type="submit" class="btn btn-default">提交</button>
+        <router-link to="/contacts" class="btn">取消</router-link>
+      </form>
+    </div>
+  </template>
+
+
+
+  <script>
+    $('button').click(function () {
+      alert('提交完成')
+    })
+  </script>
+<script src="/public/js/contact.js"></script>
+</body>
+
+</html>

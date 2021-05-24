@@ -11,7 +11,7 @@
   <meta name="author" content="">
   <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
 
-  <title>计算机学院-学生信息管理系统</title>
+  <title>人工智能学院-学生信息管理系统</title>
 
   <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
   <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -24,16 +24,18 @@
 
   <link rel="stylesheet" href="/public/css/login.css">
 
+  <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/public/css/body.css"/> 
 </head>
 
-<body>
-  <div class="site-wrapper" id="app">
+<body class="">
+  <div class="container site-wrapper " id="app">
     <div class="site-wrapper-inner">
       <div class="cover-container">
 
         <div class="masthead clearfix">
           <div class="inner">
-            <h3 class="masthead-brand">计算机学院</h3>
+            <h3 class="masthead-brand"style='color: #fff;' >人工智能学院</h3>
             <nav>
               <ul class="nav masthead-nav">
                 <router-link to="/home" tag="li"><a href="javascript:void">Home</a></router-link>
@@ -50,7 +52,7 @@
 
         <div class="mastfoot">
           <div class="inner">
-            <p>学生信息管理系统—— <a href="http://www.wut.edu.cn/">计算机</a>, by <a
+            <p>学生信息管理系统—— <a href="http://www.wut.edu.cn/">人工智能学院</a>, by <a
                 href="#">@cyg</a>.</p>
           </div>
         </div>
@@ -63,9 +65,9 @@
 
   <template id="home">
     <div class="inner cover">
-      <h1 class="cover-heading">学生信息管理系统</h1>
+      <h1 class="cover-heading" style="color: aliceblue;">学生信息管理系统</h1>
       <p class="lead">
-        这是计算机学院的学生信息管理系统，只有管理员账号才可进入系统。
+        这是人工智能学院的学生信息管理系统，只有本院相关人员才可进入系统。
       </p>
       <p class="lead">
         请先 <router-link to="/login" class="btn btn-lg btn-default">登录</router-link>
@@ -74,14 +76,20 @@
   </template>
 
   <template id="login">
-    <div class="inner cover login">
-      <form class="form-signin" action="/login" method="POST">
+    <div class="inner cover login" id="content" >
+      <form class="form-signin" id="login_form"  action="/login" method="POST">
         <h2 class="form-signin-heading">Login</h2>
 
         <label for="username" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" v-model:value="username" placeholder="Username" required autofocus="true">
         <label for="password" class="sr-only">Password</label>
         <input type="password" id="password" name="password" class="form-control" v-model:value="password" placeholder="Password" required>
+     
+        
+          <input type="radio" name="chara" v-model:value="kind" value="student" >学生
+          <input type="radio" name="chara" v-model:value="kind" value="teacher" >教师
+          <input type="radio" name="chara" v-model:value="kind" value="admin"  >管理员
+        
 
         <button class="btn btn-lg btn-info btn-block" @click.prevent="login">Sign in</button>
       </form>
@@ -91,7 +99,8 @@
   <template id="contact">
     <div>
       <h3>如有问题请联系:</h3>
-      <h4>管理员</h4>
+      <h4>管理员:张三</h4>
+      <h4>手机号：12345678910</h4>
     </div>
   </template>
 

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+  <title>学生信息管理系统</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="/public/lib/css/dashboard.css" rel="stylesheet">
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="/../..assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="/public/lib/js/ie-emulation-modes-warning.js"></script>
+  <script src="/public/lib/js/jquery.min.js"></script>
+
+  <script src="/public/lib/js/vue.js"></script>
+  <script src="/public/lib/js/vue-resource.min.js"></script>
+  <script src="/public/lib/js/vue-router.js"></script>
+
+  <link rel="stylesheet" href="/public/css/index.css">
+</head>
+
+<body>
+  <!-- 这是要挂载的vue实例 -->
+  <div id="cpp">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/students">学生信息管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+          <form @submit.prevent="search" class="navbar-form navbar-right">
+            <input v-model:value="searchData" type="text" name="searchData" class="form-control" placeholder="按学号查找">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid" id="app">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/students">总览 <span class="sr-only">(current)</span></a></li>
+            <li><a href="/students">可视化数据</a></li>
+            <li><a href="/students">学生信息</a></li>
+            <li><a href="/contacts">学生联系信息</a></li>
+            <li class="active active1"><a href="javascript:void(0)">学生成绩</a></li>
+            <li><a href="/teachers">教师信息</a></li>
+            <li ><a href="/feedbacks">日志</a></li>
+            <li><a href="/reset">修改密码</a></li>
+          </ul>
+        </div>
+
+        <!-- 模板 -->
+        <transition mode='out-in'>
+          <router-view></router-view>
+        </transition>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 渲染成绩 -->
+  <template id="grades">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      
+      <!-- 添加成绩连接 -->
+      <h2 class="sub-header" id="stuTittle">学生成绩列表</h2>
+      <div class="add-btn">
+        <!-- 跳转到组件newGrade -->
+        <router-link to="/newGrade" class="btn btn-info">添加学生成绩信息</router-link>
+      </div>
+      <!-- 学生成绩信息 -->
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>学号</th>
+              <th>姓名</th>
+              <th>大学生职业发展与规划</th>
+              <th>大学英语</th>
+              <th>高等数学</th>
+              <th>心理健康教育</th>
+              <th>体育</th>
+              <th>学习方法</th>
+              <th>创新素质培育</th>
+              <th>科研方法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in grades" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.num }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.profession}}</td>
+              <td>{{ item.english}}</td>
+              <td>{{ item.math}}</td>
+              <td>{{ item.psychology}}</td>
+              <td>{{ item.sports}}</td>
+              <td>{{ item.study}}</td>
+              <td>{{ item.innovate}}</td>
+              <td>{{ item.science}}</td>
+              <td>
+                <!-- feedbacks页面中进行编辑和删除 编辑和删除的方法 -->
+                <a class="btn" @click.prevent="editGrad(item._id)" role="button" href="">编辑</a>
+                <a class="btn" @click.prevent="delGrad(item._id)" role="button" href="">删除</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </template>
+
+  <!-- 渲染编辑学生成绩 -->
+  <template id='editGradePage'>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h2 class="sub-header">编辑学生成绩信息</h2>
+
+      <!-- 向服务器发送的路由为/grades/edit -->
+      <form action="/grades/edit" method="POST">
+        <input type="hidden" :value='grade._id' name="id">
+
+        <div class="form-group">
+          <label for="num">学号</label>
+          <input type="number" class="form-control" id="num" name='num' placeholder="输入学生学号……" :value="grade.num">
+        </div>
+        <div class="form-group">
+          <label for="name">姓名</label>
+          <input type="text" class="form-control" id="name" name='name' placeholder="输入学生姓名……" :value="grade.name">
+        </div>
+        <div class="form-group">
+          <label for="profession">大学生职业发展与规划</label>
+          <input type="number" class="form-control" id="profession" name='profession' placeholder="" :value="grade.profession">
+        </div>
+        <div class="form-group">
+          <label for="english">大学英语</label>
+          <input type="number" class="form-control" id="english" name='english' placeholder="" :value="grade.english">
+        </div>
+        <div class="form-group">
+          <label for="math">高等数学</label>
+          <input type="number" class="form-control" id="math" name='math' placeholder="" :value="grade.math">
+        </div>
+        <div class="form-group">
+          <label for="psychology">心理健康教育</label>
+          <input type="number" class="form-control" id="psychology" name='psychology' placeholder="" :value="grade.psychology">
+        </div>
+        <div class="form-group">
+          <label for="sports">体育</label>
+          <input type="number" class="form-control" id="sports" name='sports' placeholder="" :value="grade.sports">
+        </div>
+        <div class="form-group">
+          <label for="study">学习方法</label>
+          <input type="number" class="form-control" id="study" name='study' placeholder="" :value="grade.study">
+        </div>
+        <div class="form-group">
+          <label for="innovate">创新素质培育</label>
+          <input type="number" class="form-control" id="innovate" name='innovate' placeholder="" :value="grade.innovate">
+        </div>
+        <div class="form-group">
+          <label for="science">科研方法</label>
+          <input type="number" class="form-control" id="science" name='science' placeholder="" :value="grade.science">
+        </div>
+
+        <button type="submit" class="btn btn-default">提交</button>
+        <router-link to="/grades" class="btn">取消</router-link>
+      </form>
+    </div>
+  </template>
+
+  <!-- 渲染添加学生成绩 -->
+  <template id="newGrade">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h2 class="sub-header">添加学生成绩</h2>
+
+        <!-- 请求的路由为/grades/newGrade -->
+        <form action="/grades/newGrade" method="POST">
+          <div class="form-group">
+            <label for="num">学号</label>
+            <input type="number" class="form-control" id="num" name='num' placeholder="输入学生学号……" required>
+          </div>
+          <div class="form-group">
+            <label for="name">姓名</label>
+            <input type="text" class="form-control" id="name" name='name' placeholder="输入学生姓名……" required>
+          </div>
+          <div class="form-group">
+            <label for="profession">大学生职业发展与规划</label>
+            <input type="number" class="form-control" id="profession" name='profession' placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="english">大学英语</label>
+            <input type="number" class="form-control" id="english" name='english' placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="math">高等数学</label>
+            <input type="number" class="form-control" id="math" name='math' placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="psychology">心理健康教育</label>
+            <input type="number" class="form-control" id="psychology" name='psychology' placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="sports">体育</label>
+            <input type="number" class="form-control" id="sports" name='sports' placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="study">学习方法</label>
+            <input type="number" class="form-control" id="study" name='study' placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="innovate">创新素质培育</label>
+            <input type="number" class="form-control" id="innovate" name='innovate' placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="science">科研方法</label>
+            <input type="number" class="form-control" id="science" name='science' placeholder="" >
+          </div>
+
+
+          <button type="submit" class="btn btn-default">提交</button>
+          <router-link to='/grades' class="btn" >
+            <svg t="1111111" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              p-id="2717" width="15" height="15">
+              <path
+                d="M853.333333 245.333333H245.333333l93.866667-93.866666c12.8-12.8 12.8-34.133333 0-46.933334-12.8-12.8-34.133333-12.8-46.933333 0l-145.066667 145.066667c-12.8 12.8-12.8 34.133333 0 46.933333l145.066667 145.066667c6.4 6.4 14.933333 10.666667 23.466666 10.666667s17.066667-4.266667 23.466667-10.666667c12.8-12.8 12.8-34.133333 0-46.933333L256 311.466667h597.333333c6.4 0 10.666667 4.266667 10.666667 10.666666v426.666667c0 6.4-4.266667 10.666667-10.666667 10.666667H170.666667c-17.066667 0-32 14.933333-32 32s14.933333 32 32 32h682.666666c40.533333 0 74.666667-34.133333 74.666667-74.666667V320c0-40.533333-34.133333-74.666667-74.666667-74.666667z"
+                p-id="2718"></path>
+            </svg>
+          </router-link>
+        </form>
+      </div>
+  </template>
+
+
+
+  <script>
+    $('button').click(function () {
+      alert('提交完成')
+    })
+  </script>
+<script src="/public/js/grade.js"></script>
+</body>
+
+</html>

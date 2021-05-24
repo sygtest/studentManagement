@@ -7,7 +7,8 @@ const login = {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      kind: 'admin',
     }
   },
   methods: {
@@ -18,16 +19,25 @@ const login = {
       if (this.password == '') {
         return alert('请输入密码')
       }
-      this.$http.post('/login', this._data).then((res) => {
-        if (res.body == false) {
-          alert('服务器忙，请稍后重试')
-        } else if (res.body.err_code == 1) {
-          alert('用户名或密码错误')
-        } else if (res.body.err_code == 0) {
-          alert('登录成功！')
-          window.location.href = '/students'
-        }
-      })
+
+        this.$http.post('/login', this._data).then((res) => {
+          if (res.body == false) {
+            alert('服务器忙，请稍后重试')
+          } else if (res.body.err_code == 1) {
+            alert('用户名或密码错误')
+          } else if (res.body.err_code == 10) {
+            alert('登录成功！')
+            window.location.href = '/studentUser'
+          }
+           else if (res.body.err_code == 20) {
+            alert('登录成功！')
+            window.location.href = '/teacherUser'
+          }
+           else if (res.body.err_code == 0) {
+            alert('登录成功！')
+            window.location.href = '/students'
+          }
+        })
     }
   },
 }

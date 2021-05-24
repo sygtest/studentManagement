@@ -13,3 +13,8 @@
 .v-enter-active,.v-leave-active{
   transition: all 0.1s linear;
 }
+
+.site-wrapper{
+  height: 45vh;
+  box-shadow: 5px 5px 0.8 5px rgba(255, 255, 255, 1) ;
+}

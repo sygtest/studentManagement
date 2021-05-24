@@ -33,6 +33,7 @@
   </head>
 
   <body>
+    <!-- 这是要挂载的vue实例 -->
     <div id="app">
       <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -64,10 +65,15 @@
               <li id="topLink" class="active active1"><a href="javascript:void(0)">总览 <span class="sr-only">(current)</span></a></li>
               <li id="vdLink"><a href="javascript:void(0)">可视化数据</a></li>
               <li id="stuLink"><a href="javascript:void(0)">学生信息</a></li>
-              <li><a href="/feedback">日志</a></li>
+              <li><a href="/contacts">学生联系信息</a></li>
+              <li><a href="/grades">学生成绩</a></li>
+              <li><a href="/teachers">教师信息</a></li>
+              <li><a href="/feedbacks">日志</a></li>
+              <li><a href="/reset">修改密码</a></li>
             </ul>
           </div>
   
+          <!-- 模板 -->
           <transition mode='out-in'>
             <router-view></router-view>
           </transition>
@@ -76,13 +82,13 @@
       </div>
     </div>
 
-
+    <!-- 渲染学生页面 students就是路由 -->
     <template id="students">
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h2 class="sub-header">Welcome</h1>
           <div class="row placeholders">
             <p class="lead">
-              这是计算机学院——信息工程专业——转本班的学生信息管理系统。
+              这是人工智能学院的学生信息管理系统。
             </p>
             <img src="/public/img/bg.png" class="img-thumbnail" alt="计算机学院">
           </div>
@@ -93,8 +99,10 @@
           <div class="col-xs-6 col-sm-6 placeholder pie" id="pie2"></div> 
         </div>
     
+        <!-- 添加学生信息 -->
         <h2 class="sub-header" id="stuTittle">学生名单</h2>
         <div class="add-btn">
+          <!-- 跳转到组件create -->
           <router-link to="/create" class="btn btn-info">添加学生信息</router-link>
         </div>
     
@@ -108,6 +116,15 @@
                 <th>年龄</th>
                 <th>性别</th>
                 <th>爱好</th>
+                <th>qq号</th>
+                <th>住址</th>
+                <th>身份证号</th>
+                <th>邮箱</th>
+                <th>宿舍</th>
+                <th>专业</th>
+                <th>学历</th>
+                <th>生源地</th>
+                <th>密码</th>
               </tr>
             </thead>
             <tbody>
@@ -118,7 +135,17 @@
                 <td>{{ item.age }}</td>
                 <td>{{ item.sex }}</td>
                 <td>{{ item.hobbies }}</td>
+                <td>{{ item.qq}}</td>
+                <td>{{ item.address}}</td>
+                <td>{{ item.idNumber}}</td>
+                <td>{{ item.email}}</td>
+                <td>{{ item.dorm}}</td>
+                <td>{{ item.major}}</td>
+                <td>{{ item.education}}</td>
+                <td>{{ item.originAdd}}</td>
+                <td>{{ item.password}}</td>
                 <td>
+                  <!-- students页面中进行编辑和删除 编辑和删除的方法 -->
                   <a class="btn" @click.prevent="edit(item._id)" role="button" href="">编辑</a>
                   <a class="btn" @click.prevent="del(item._id)" role="button" href="">删除</a>
                 </td>
@@ -129,10 +156,12 @@
       </div>
     </template>
 
+    <!-- 渲染编辑学生页面 -->
     <template id="editPage">
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h2 class="sub-header">编辑学生信息</h2>
     
+        <!-- 向服务器发送的路由为/students/edit -->
         <form action="/students/edit" method="POST">
           <input type="hidden" :value='student._id' name="id">
           <div class="form-group">
@@ -161,16 +190,54 @@
             <label for="hobbies">爱好</label>
             <input type="text" class="form-control" id="hobbies" name='hobbies' placeholder="" :value="student.hobbies">
           </div>
+          <div class="form-group">
+            <label for="qq">qq号</label>
+            <input type="text" class="form-control" id="qq" name='qq' placeholder="" :value="student.qq">
+          </div>
+          <div class="form-group">
+            <label for="address">住址</label>
+            <input type="text" class="form-control" id="address" name='address' placeholder="" :value="student.address">
+          </div>
+          <div class="form-group">
+            <label for="idNumber">身份证号</label>
+            <input type="text" class="form-control" id="idNumber" name='idNumber' placeholder="" :value="student.idNumber">
+          </div>
+          <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="text" class="form-control" id="email" name='email' placeholder="" :value="student.email">
+          </div>
+          <div class="form-group">
+            <label for="dorm">宿舍</label>
+            <input type="text" class="form-control" id="dorm" name='dorm' placeholder="" :value="student.dorm">
+          </div>
+         <div class="form-group">
+            <label for="major">专业</label>
+            <input type="text" class="form-control" id="major" name='major' placeholder="" :value="student.major">
+          </div> 
+         <div class="form-group">
+            <label for="education">学历</label>
+            <input type="text" class="form-control" id="education" name='education' placeholder="" :value="student.education">
+          </div> 
+         <div class="form-group">
+            <label for="originAdd">生源地</label>
+            <input type="text" class="form-control" id="originAdd" name='originAdd' placeholder="" :value="student.originAdd">
+          </div> 
+          <div class="form-group">
+            <label for="name">密码</label>
+            <input type="text" class="form-control" id="password" name='password' placeholder="" :value="student.password">
+          </div>
           <button type="submit" class="btn btn-default">提交</button>
           <router-link to="/students" class="btn">取消</router-link>
         </form>
       </div>
     </template>
 
+    <!-- 渲染添加学生页面 -->
     <template id="create">
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h2 class="sub-header">添加学生</h2>
 
+        <!-- 请求的路由为/students/create -->
         <form action="/students/create" method="POST">
           <div class="form-group">
             <label for="num">学号</label>
@@ -182,17 +249,17 @@
           </div>
           <div class="form-group">
             <label for="age">年龄</label>
-            <input type="number" class="form-control" id="age" name='age' placeholder="输入学生年龄……" required>
+            <input type="number" class="form-control" id="age" name='age' placeholder="输入学生年龄……" >
           </div>
 
           <div class="form-group">
             <label for="">性别</label>
             <br>
             <label class="radio-inline">
-              <input type="radio" name="sex" id="inlineRadio1" value="男" required> 男
+              <input type="radio" name="sex" id="inlineRadio1" value="男" > 男
             </label>
             <label class="radio-inline">
-              <input type="radio" name="sex" id="inlineRadio2" value="女" required> 女
+              <input type="radio" name="sex" id="inlineRadio2" value="女" > 女
             </label>
           </div>
 
@@ -201,6 +268,46 @@
             <input type="text" class="form-control" id="hobbies" name='hobbies' placeholder="">
           </div>
 
+          <div class="form-group">
+            <label for="qq">qq号</label>
+            <input type="text" class="form-control" id="qq" name='qq' placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="address">住址</label>
+            <input type="text" class="form-control" id="address" name='address' placeholder="">
+          </div>
+          
+          <div class="form-group">
+            <label for="idNumber">身份证号</label>
+            <input type="text" class="form-control" id="idNumber" name='idNumber' placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="text" class="form-control" id="email" name='email' placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="dorm">宿舍</label>
+            <input type="text" class="form-control" id="dorm" name='dorm' placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="major">专业</label>
+            <input type="text" class="form-control" id="major" name='major' placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="education">学历</label>
+            <input type="text" class="form-control" id="education" name='education' placeholder="">
+          </div>
+          
+          <div class="form-group">
+            <label for="originAdd">生源地</label>
+            <input type="text" class="form-control" id="originAdd" name='originAdd' placeholder="">
+          </div>
+              
           <button type="submit" class="btn btn-default">提交</button>
           <router-link to="/students" class="btn">取消</router-link>
         </form>
@@ -215,10 +322,13 @@
         </router-link>
         <div class="inner cover">
           <h2 class="cover-heading">学生信息管理系统</h2>
-          <p class="lead">
-            本系统使用Bootstrap、Vue、Vue-resource、Vue-Router、NodeJS、MongoDB等技术制作而成。
+          <p class="lead"> 
+            本系统用到的前端技术有Bootstrap、Vue、Vue-resource、Vue-Router、ECharts
+            <br>
+            后端用到的技术有Node.js、Express、MongoDB、art-template
           </p>
-          
+          <p class="lead">前端页面通过引入Vue.js和Vue-Router的方式对其子组件进行管理</p>
+          <p class="lead">后端通过Express中提供的内置路由对前端的请求进行处理</p> 
         </div>
       </div>
     </template>
@@ -233,6 +343,8 @@
           <p class="lead">
             如需帮助，请联系开发人员
           </p>
+          <h4>cyg</h4>
+          <h4>联系方式：12345678901</h4>
           
         </div>
       </div>

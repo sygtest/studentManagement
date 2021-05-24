@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+  <title>学生信息管理系统</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="/public/lib/css/dashboard.css" rel="stylesheet">
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="/../..assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="/public/lib/js/ie-emulation-modes-warning.js"></script>
+  <script src="/public/lib/js/jquery.min.js"></script>
+
+  <script src="/public/lib/js/vue.js"></script>
+  <script src="/public/lib/js/vue-resource.min.js"></script>
+  <script src="/public/lib/js/vue-router.js"></script>
+
+  <link rel="stylesheet" href="/public/css/index.css">
+</head>
+
+<body>
+  <!-- 这是要挂载的vue实例 -->
+  <div id="bpp">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/students">学生信息管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid" id="app">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/students">总览 <span class="sr-only">(current)</span></a></li>
+            <li><a href="/students">可视化数据</a></li>
+            <li><a href="/students">学生信息</a></li>
+            <li><a href="/contacts">学生联系信息</a></li>
+            <li><a href="/grades">学生成绩</a></li>
+            <li><a href="/teachers">教师信息</a></li>
+            <li><a href="/feedbacks">日志</a></li>
+            <li class="active active1"><a href="javascript:void(0)">修改密码</a></li>
+          </ul>
+        </div>
+
+        <!-- 模板 -->
+        <transition mode='out-in'>
+          <router-view></router-view>
+        </transition>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 渲染修改密码 -->
+  <template id="reset">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <!-- 修改密码表单 -->
+      <form action="/reset" id="reset_form" method="POST"> 
+        <div class="form-group">
+        <label for="username">用户名</label>
+        <input type="text" id="username" name="username" class="form-control" v-model:value="username" placeholder="" required autofocus="true">
+        </div>
+        <div class="form-group">
+          <label for="oldpassword">密码</label>
+          <input type="password" id="oldpassword" name="oldpassword" class="form-control" v-model:value="oldpassword" placeholder="" required>
+        </div>
+        <div class="form-group">
+          <label for="password">新密码</label>
+          <input type="password" class="form-control" id="password" name='password' v-model:value="password" placeholder="" required>
+        </div>
+
+        <button class="btn btn-lg btn-info btn-block" @click.prevent="reset">提交</button>
+        
+      </form>
+
+    </div>
+  </template>
+
+
+<script src="/public/js/reset.js"></script>
+</body>
+
+</html>

@@ -1,9 +1,13 @@
+// 1 引包
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-
+// 2 导出mongoose中的用于建立数据模型的schema数据
+const Schema = mongoose.Schema;
+// 3 连接数据库
 mongoose.connect('mongodb://localhost:27017/student')
 
-var studentSchema = new Schema({
+// 4创建数据模型
+
+var teacherSchema = new Schema({
   num: {
     type: Number,
     required: true
@@ -24,40 +28,32 @@ var studentSchema = new Schema({
     type: String,
     default:''
   },
-  hobbies: {
-    type: String,
+  phone:{
+    type: Number,
     default:''
-  },
-  qq:{
-    type: String,
-   default:''
   },
   address:{
     type: String,
-   default:''
+    default:''
   },
   idNumber:{
     type: String,
-   default:''
+    default:''
   },
   email:{
     type: String,
   },
-  dorm:{
-    type: String,
-   default:''
-  },
   major:{
     type: String,
-   default:''
+    default:''
   },
   education:{
     type: String,
-   default:''
+    default:''
   },
-  originAdd:{
+  degree:{
     type: String,
-   default:''
+    default:''
   },
   createdTime:{
     type: Date,
@@ -69,11 +65,8 @@ var studentSchema = new Schema({
   },
   power: {
     type: Number,
-    default: 1
+    default: 2
   }
-
-  
 })
 
-module.exports = mongoose.model('Student', studentSchema)
-
+module.exports = mongoose.model('Teacher', teacherSchema)

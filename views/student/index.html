@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+    <title>学生信息管理系统</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/public/lib/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/public/lib/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/public/lib/css/dashboard.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="/../..assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/public/lib/js/ie-emulation-modes-warning.js"></script>
+    <script src="/public/lib/js/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/public/css/index.css">
+
+      <!-- E-charts -->
+    <script src="public/lib/js/echarts.min.js"></script>
+
+    <script src="/public/lib/js/vue.js"></script>
+    <script src="/public/lib/js/vue-resource.min.js"></script>
+    <script src="/public/lib/js/vue-router.js"></script>
+  </head>
+
+  <body>
+    <!-- 这是要挂载的vue实例 -->
+    <div id="app">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">学生信息管理系统</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Help</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+  
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+              <li id="stuLink"><a href="javascript:void(0)">基本信息</a></li>
+              <li><a href="#">联系信息</a></li>
+              <li><a href="#">成绩信息</a></li>
+            </ul>
+          </div>
+  
+
+          <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        
+
+            <div class="table-responsive" >
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>爱好</th>
+                    <th>qq号</th>
+                    <th>住址</th>
+                    <th>身份证号</th>
+                    <th>邮箱</th>
+                    <th>宿舍</th>
+                    <th>专业</th>
+                    <th>学历</th>
+                    <th>生源地</th>
+                    <th>密码</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.age }}</td>
+                    <td>{{ user.sex }}</td>
+                    <td>{{ user.hobbies }}</td>
+                    <td>{{ user.qq}}</td>
+                    <td>{{ user.address}}</td>
+                    <td>{{ user.idNumber}}</td>
+                    <td>{{ user.email}}</td>
+                    <td>{{ user.dorm}}</td>
+                    <td>{{ user.major}}</td>
+                    <td>{{ user.education}}</td>
+                    <td>{{ user.originAdd}}</td>
+                    <td>{{ user.password}}</td>
+                    <td>
+                      <!-- studentUser页面中进行编辑和删除 编辑和删除的方法 -->
+                      <a class="btn" @click.prevent="editStudentMessage(user._id)" role="button" href="">编辑</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- 模板 -->
+          <transition mode='out-in'>
+            <router-view></router-view>
+          </transition>
+          
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 渲染编辑学生页面 -->
+    <template id="editMessagePage">
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="sub-header">编辑信息</h2>
+    
+        <!-- 向服务器发送的路由为/students/edit -->
+        <form action="/studentUser/edit" method="POST">
+          <input type="hidden" :value='student._id' name="id">
+          <div class="form-group">
+          <div class="form-group">
+            <label for="name">姓名</label>
+            <input type="text" class="form-control" id="name" name='name' placeholder="输入姓名……" :value="student.name">
+          </div>
+          <div class="form-group">
+            <label for="age">年龄</label>
+            <input type="number" class="form-control" id="age" name='age' placeholder="输入年龄……" :value="student.age">
+          </div>
+          <div class="form-group">
+            <label for="">性别</label>
+            <br>
+            <label class="radio-inline">
+              <input type="radio" name="sex" id="inlineRadio1" value="男"> 男
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="sex" id="inlineRadio2" value="女"> 女
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="hobbies">爱好</label>
+            <input type="text" class="form-control" id="hobbies" name='hobbies' placeholder="" :value="student.hobbies">
+          </div>
+          <div class="form-group">
+            <label for="qq">qq号</label>
+            <input type="text" class="form-control" id="qq" name='qq' placeholder="" :value="student.qq">
+          </div>
+          <div class="form-group">
+            <label for="address">住址</label>
+            <input type="text" class="form-control" id="address" name='address' placeholder="" :value="student.address">
+          </div>
+          <div class="form-group">
+            <label for="idNumber">身份证号</label>
+            <input type="text" class="form-control" id="idNumber" name='idNumber' placeholder="" :value="student.idNumber">
+          </div>
+          <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="text" class="form-control" id="email" name='email' placeholder="" :value="student.email">
+          </div>
+          <div class="form-group">
+            <label for="dorm">宿舍</label>
+            <input type="text" class="form-control" id="dorm" name='dorm' placeholder="" :value="student.dorm">
+          </div>
+         <div class="form-group">
+            <label for="major">专业</label>
+            <input type="text" class="form-control" id="major" name='major' placeholder="" :value="student.major">
+          </div> 
+         <div class="form-group">
+            <label for="education">学历</label>
+            <input type="text" class="form-control" id="education" name='education' placeholder="" :value="student.education">
+          </div> 
+         <div class="form-group">
+            <label for="originAdd">生源地</label>
+            <input type="text" class="form-control" id="originAdd" name='originAdd' placeholder="" :value="student.originAdd">
+          </div> 
+         <div class="form-group">
+            <label for="password">密码</label>
+            <input type="text" class="form-control" id="password" name='password' placeholder="" :value="student.password">
+          </div> 
+          <button type="submit" class="btn btn-default">提交</button>
+          <router-link to="/students" class="btn">取消</router-link>
+        </form>
+      </div>
+    </template>
+
+    <script src="/public/js/student/index.js"></script>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <!-- <script src="../public/lib/js/bootstrap.min.js"></script> -->
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <!-- <script src="../public/lib/js/holder.min.js"></script> -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/public/lib/js/ie10-viewport-bug-workaround.js"></script>
+  
+    
+</body></html>
